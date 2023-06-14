@@ -8,6 +8,7 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @Table(name = "warehouse_inventory")
@@ -15,7 +16,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class WarehouseInventory {
+public class WarehouseInventory{
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.AUTO)

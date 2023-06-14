@@ -8,4 +8,5 @@ import javax.transaction.Transactional;
 @Transactional
 public interface WarehouseInventoryRepository extends JpaRepository <WarehouseInventory,Integer> {
     WarehouseInventory findByGoodsAndWarehouse(Goods goodsId, Warehouse warehouseId);
+    WarehouseInventory findByWarehouse(Warehouse warehouse);
 }
