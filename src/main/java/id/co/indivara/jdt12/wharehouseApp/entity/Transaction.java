@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 @Table(name = "transaction")
@@ -19,7 +20,9 @@ public class Transaction {
     @Column(name = "type")
     private String type;
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "good_id")
+    @JoinColumn(name = "goods_id")
     @JsonIgnore
     private Goods goods;
+    @Column(name = "date_time")
+    private Date dateTime;
 }

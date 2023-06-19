@@ -17,6 +17,6 @@ import java.io.Serializable;
 @Builder
 public class Goods {
     @Id
-    @Column(name = "good_id")
-    private String goodId;
+    @Column(name = "goods_id")
+    private String goodsId;
 }

@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 @Table(name = "whouse_to_store")
@@ -27,8 +28,11 @@ public class WarehouseToStore {
     @JoinColumn(name = "store_dest")
     @JsonIgnore
     private Store storeDest;
-    @Column(name = "good_id")
-    private String goodId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "goods_id")
+    private Goods goods;
     @Column(name = "total")
     private Integer total;
+    @Column(name = "date_time")
+    private Date dateTime;
 }

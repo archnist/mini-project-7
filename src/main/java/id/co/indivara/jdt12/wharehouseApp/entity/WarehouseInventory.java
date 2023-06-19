@@ -16,14 +16,14 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class WarehouseInventory{
+public class WarehouseInventory {
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "good_id")
+    @JoinColumn(name = "goods_id")
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JsonIgnore
     private Goods goods;

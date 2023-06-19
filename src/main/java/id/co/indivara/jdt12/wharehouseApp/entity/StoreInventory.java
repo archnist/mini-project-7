@@ -22,7 +22,7 @@ public class StoreInventory {
     private Integer id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "good_id")
+    @JoinColumn(name = "goods_id")
     @JsonIgnore
     private Goods goods;
 

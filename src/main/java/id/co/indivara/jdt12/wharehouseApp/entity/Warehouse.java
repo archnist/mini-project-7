@@ -8,7 +8,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import java.io.Serializable;
+import java.util.Date;
 
 @Entity
 @Table(name = "warehouses")
@@ -22,4 +22,6 @@ public class Warehouse {
     private String warehouseId;
     @Column(name = "warehouse_name")
     private String warehouseName;
+    @Column(name = "join_date")
+    private Date date;
 }

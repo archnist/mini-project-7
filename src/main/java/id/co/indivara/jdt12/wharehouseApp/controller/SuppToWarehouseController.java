@@ -7,6 +7,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
+
 @CrossOrigin("http://localhost:8080")
 @RequestMapping("/supp")
 @RestController
@@ -25,14 +27,16 @@ public class SuppToWarehouseController {
     @PostMapping("/add/{whouseid}/{goodsid}")
     public ResponseEntity<SuppToWarehouse> addGoods(@PathVariable("whouseid") Warehouse whouseid, @PathVariable("goodsid") Goods goodsid, @RequestBody SuppToWarehouse suppToWarehouse){
         SuppToWarehouse supp = warehouseRepository.findById(whouseid.getWarehouseId()).map(warehouse -> {
-            Goods goods = goodsRepository.findById(goodsid.getGoodId()).get();
+            Goods goods = goodsRepository.findById(goodsid.getGoodsId()).get();
             suppToWarehouse.setTransactionId("T" + (transactionRepository.count()+1));
             suppToWarehouse.setWarehouse(warehouse);
             suppToWarehouse.setGoods(goods);
+            suppToWarehouse.setDateTime(new Date());
             Transaction transaction = new Transaction();
             transaction.setTransactionId("T" + (transactionRepository.count()+1));
             transaction.setType("Supplier To Warehouse");
             transaction.setGoods(goodsid);
+            transaction.setDateTime(new Date());
             transactionRepository.save(transaction);
             WarehouseInventory warehouseInventory = new WarehouseInventory();
             try {
