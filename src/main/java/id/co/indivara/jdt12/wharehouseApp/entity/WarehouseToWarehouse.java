@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 @Table(name = "whouse_to_whouse")
@@ -17,14 +18,22 @@ public class WarehouseToWarehouse {
     @Id
     @Column(name = "transaction_id")
     private String transactionId;
-    @Column(name = "whouse_src")
-    private String warehouseSource;
-    @Column(name = "whouse_dest")
-    private String warehouseDestination;
+
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "good_id")
+    @JoinColumn(name = "whouse_src")
     @JsonIgnore
+    private Warehouse warehouseSource;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "whouse_dest")
+    @JsonIgnore
+    private Warehouse warehouseDestination;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "goods_id")
     private Goods goods;
     @Column(name = "total")
     private Integer total;
+    @Column(name = "date_time")
+    private Date dateTime;
 }

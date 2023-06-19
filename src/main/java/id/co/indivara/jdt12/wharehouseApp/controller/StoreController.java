@@ -5,7 +5,9 @@ import id.co.indivara.jdt12.wharehouseApp.repo.StoreRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-@CrossOrigin(origins = "http://localhost:8080")
+import java.util.Date;
+
+@CrossOrigin(origins = "http://localhost:8081")
 @RestController
 @RequestMapping("/store")
 public class StoreController {
@@ -14,7 +16,8 @@ public class StoreController {
 
     @PostMapping("/register")
     public Store addStore(@RequestBody Store store){
-        System.out.println(store.getStoreName() + " Added Successfully!");
+        store.setStoreId("str" + (storeRepository.count() + 1));
+        store.setDate(new Date());
         return storeRepository.save(store);
     }
 }

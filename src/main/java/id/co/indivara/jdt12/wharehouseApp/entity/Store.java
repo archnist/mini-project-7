@@ -7,6 +7,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.util.Date;
 
 @Entity
 @Table(name = "stores")
@@ -20,4 +21,6 @@ public class Store {
     private String storeId;
     @Column(name = "store_name")
     private String storeName;
+    @Column(name = "join_date")
+    private Date date;
 }

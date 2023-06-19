@@ -7,6 +7,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
+
 @CrossOrigin("http://localhost:8080")
 @RequestMapping("/store")
 @RestController
@@ -32,36 +34,31 @@ public class WarehouseToStoreController {
             StoreInventory storeInventory = new StoreInventory();
             StoreInventory si = storeInventoryRepository.findByGoodsAndStore(goodsId,storeDest);
             WarehouseInventory wi = warehouseInventoryRepository.findByGoodsAndWarehouse(goodsId,warehouseSrc);
-            try {
-                if (wi.getStock() >= warehouseToStoreReq.getTotal()){
-                    si.setGoods(goodsId);
-                    si.setStore(storeDest);
+            WarehouseToStore warehouseToStore = new WarehouseToStore();
+            if (wi.getStock() >= warehouseToStoreReq.getTotal()){
+                try {
                     si.setStock(si.getStock() + warehouseToStoreReq.getTotal());
                     storeInventoryRepository.save(si);
                     wi.setStock(wi.getStock() - warehouseToStoreReq.getTotal());
-                }
-            }catch (Exception ex){
-                if (wi.getStock() >= warehouseToStoreReq.getTotal()){
+                }catch (Exception ex){
                     storeInventory.setGoods(goodsId);
                     storeInventory.setStore(storeDest);
                     storeInventory.setStock(warehouseToStoreReq.getTotal());
                     storeInventoryRepository.save(storeInventory);
                     wi.setStock(wi.getStock() - warehouseToStoreReq.getTotal());
                 }
-            }
-            warehouseInventoryRepository.save(wi);
-            WarehouseToStore warehouseToStore = new WarehouseToStore();
-            if (wi.getStock() >= warehouseToStoreReq.getTotal()){
+                warehouseInventoryRepository.save(wi);
                 warehouseToStore.setTransactionId("T" + (transactionRepository.count() + 1));
                 warehouseToStore.setWarehouseSrc(warehouse);
                 warehouseToStore.setStoreDest(storeDest);
-                warehouseToStore.setGoodId(goodsId.getGoodId());
+                warehouseToStore.setGoods(goodsId);
                 warehouseToStore.setTotal(warehouseToStoreReq.getTotal());
-
+                warehouseToStore.setDateTime(new Date());
                 Transaction transaction = new Transaction();
                 transaction.setTransactionId("T" + (transactionRepository.count() + 1));
                 transaction.setType("Warehouse To Store");
                 transaction.setGoods(goodsId);
+                transaction.setDateTime(new Date());
                 transactionRepository.save(transaction);
             }
             return warehouseToStoreRepository.save(warehouseToStore);
