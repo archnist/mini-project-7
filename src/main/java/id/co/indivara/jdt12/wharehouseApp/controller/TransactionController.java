@@ -1,6 +1,5 @@
 package id.co.indivara.jdt12.wharehouseApp.controller;
-import id.co.indivara.jdt12.wharehouseApp.entity.SuppToWarehouse;
-import id.co.indivara.jdt12.wharehouseApp.entity.Transaction;
+import id.co.indivara.jdt12.wharehouseApp.entity.*;
 import id.co.indivara.jdt12.wharehouseApp.repo.SuppToWarehouseRepository;
 import id.co.indivara.jdt12.wharehouseApp.repo.TransactionRepository;
 import id.co.indivara.jdt12.wharehouseApp.repo.WarehouseToStoreRepository;
@@ -33,5 +32,18 @@ public class TransactionController {
     @GetMapping("/{type}")
     public List<Transaction> showByType(@PathVariable("type") String type){
         return (List<Transaction>) transactionRepository.findByType(type);
+    }
+
+    @GetMapping("/suppToWhouse")
+    public List<SuppToWarehouse> findSupplierToWarehouseTransaction(){
+        return (List<SuppToWarehouse>) suppToWarehouseRepository.findAll();
+    }
+    @GetMapping("/whouseToWhouse")
+    public List<WarehouseToWarehouse> findWarehouseToWarehouseTransaction(){
+        return (List<WarehouseToWarehouse>) warehouseToWarehouseRepository.findAll();
+    }
+    @GetMapping("/whouseToStore")
+    public List<WarehouseToStore> findWarehouseToStoreTransaction(){
+        return (List<WarehouseToStore>) warehouseToStoreRepository.findAll();
     }
 }

@@ -22,6 +22,8 @@ public class Warehouse {
     private String warehouseId;
     @Column(name = "warehouse_name")
     private String warehouseName;
+    @Column(name = "location")
+    private String location;
     @Column(name = "join_date")
     private Date date;
 }

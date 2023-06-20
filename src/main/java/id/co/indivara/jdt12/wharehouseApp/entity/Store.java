@@ -21,6 +21,8 @@ public class Store {
     private String storeId;
     @Column(name = "store_name")
     private String storeName;
+    @Column(name = "location")
+    private String location;
     @Column(name = "join_date")
     private Date date;
 }

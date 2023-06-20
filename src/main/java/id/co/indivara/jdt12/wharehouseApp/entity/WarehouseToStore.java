@@ -22,7 +22,7 @@ public class WarehouseToStore {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "whouse_src")
-    @JsonIgnore
+    @JsonIgnoreProperties({"hibernateLazyInitializer"})
     private Warehouse warehouseSrc;
 
     @ManyToOne(fetch = FetchType.LAZY)
