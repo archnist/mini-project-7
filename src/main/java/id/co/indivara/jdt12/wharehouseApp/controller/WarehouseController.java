@@ -1,12 +1,6 @@
 package id.co.indivara.jdt12.wharehouseApp.controller;
-import id.co.indivara.jdt12.wharehouseApp.entity.SuppToWarehouse;
-import id.co.indivara.jdt12.wharehouseApp.entity.Warehouse;
-import id.co.indivara.jdt12.wharehouseApp.entity.WarehouseToStore;
-import id.co.indivara.jdt12.wharehouseApp.entity.WarehouseToWarehouse;
-import id.co.indivara.jdt12.wharehouseApp.repo.SuppToWarehouseRepository;
-import id.co.indivara.jdt12.wharehouseApp.repo.WarehouseRepository;
-import id.co.indivara.jdt12.wharehouseApp.repo.WarehouseToStoreRepository;
-import id.co.indivara.jdt12.wharehouseApp.repo.WarehouseToWarehouseRepository;
+import id.co.indivara.jdt12.wharehouseApp.entity.*;
+import id.co.indivara.jdt12.wharehouseApp.repo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import java.util.Date;
@@ -26,6 +20,8 @@ public class WarehouseController {
     WarehouseToWarehouseRepository warehouseToWarehouseRepository;
     @Autowired
     WarehouseToStoreRepository warehouseToStoreRepository;
+    @Autowired
+    WarehouseInventoryRepository warehouseInventoryRepository;
 
     @PostMapping("/register")
     public Warehouse addWarehouse(@RequestBody Warehouse warehouse){
@@ -33,7 +29,9 @@ public class WarehouseController {
         warehouse.setDate(new Date());
         return warehouseRepository.save(warehouse);
     }
-    public List<SuppToWarehouse> findSupplierToWarehouseTransaction(Warehouse warehouse){
+
+    @GetMapping("/transaction/suppToWarehouse/{warehouse}")
+    public List<SuppToWarehouse> findSupplierToWarehouseTransaction(@PathVariable("warehouse") Warehouse warehouse){
         return (List<SuppToWarehouse>) suppToWarehouseRepository.findByWarehouse(warehouse);
     }
     public List<WarehouseToWarehouse> findWarehouseToWarehouseTransaction(Warehouse warehouse){
@@ -50,5 +48,14 @@ public class WarehouseController {
         result.put("Warehouse To Warehouse",findWarehouseToWarehouseTransaction(warehouse));
         result.put("Warehouse To Store", findWarehouseToStoreTransaction(warehouse));
         return result;
+    }
+
+    @DeleteMapping("/delete/{warehouse}")
+    public void removeWarehouse(@PathVariable("warehouse") Warehouse warehouse){
+        suppToWarehouseRepository.deleteByWarehouse(warehouse);
+        warehouseToWarehouseRepository.deleteByWarehouseSource(warehouse);
+        warehouseToStoreRepository.deleteByWarehouseSrc(warehouse);
+        warehouseInventoryRepository.deleteByWarehouse(warehouse);
+        warehouseRepository.deleteById(warehouse.getWarehouseId());
     }
 }

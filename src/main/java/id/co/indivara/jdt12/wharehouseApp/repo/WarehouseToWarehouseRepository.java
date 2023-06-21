@@ -8,4 +8,5 @@ import java.util.List;
 @Transactional
 public interface WarehouseToWarehouseRepository extends JpaRepository<WarehouseToWarehouse, String> {
     List<WarehouseToWarehouse> findByWarehouseSource(Warehouse warehouse);
+    void deleteByWarehouseSource(Warehouse warehouse);
 }

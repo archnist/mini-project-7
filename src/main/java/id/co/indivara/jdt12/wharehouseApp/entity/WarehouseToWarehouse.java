@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -21,16 +23,19 @@ public class WarehouseToWarehouse {
     private String transactionId;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "whouse_src")
     @JsonIgnoreProperties({"hibernateLazyInitializer"})
     private Warehouse warehouseSource;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "whouse_dest")
     @JsonIgnoreProperties({"hibernateLazyInitializer"})
     private Warehouse warehouseDestination;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "goods_id")
     @JsonIgnoreProperties({"hibernateLazyInitializer"})
     private Goods goods;

@@ -10,5 +10,6 @@ import java.util.List;
 @Transactional
 public interface SuppToWarehouseRepository extends JpaRepository<SuppToWarehouse, String> {
     List<SuppToWarehouse> findByWarehouse(Warehouse warehouse);
+    void deleteByWarehouse(Warehouse warehouse);
 
 }
