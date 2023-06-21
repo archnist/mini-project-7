@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Date;
 
@@ -24,6 +25,7 @@ public class SuppToWarehouseController {
     @Autowired
     TransactionRepository transactionRepository;
 
+    @ExceptionHandler(ResponseStatusException.class)
     @PostMapping("/add/{whouseid}/{goodsid}")
     public ResponseEntity<SuppToWarehouse> addGoods(@PathVariable("whouseid") Warehouse whouseid, @PathVariable("goodsid") Goods goodsid, @RequestBody SuppToWarehouse suppToWarehouse){
         SuppToWarehouse supp = warehouseRepository.findById(whouseid.getWarehouseId()).map(warehouse -> {
