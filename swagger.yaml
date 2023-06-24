@@ -10,7 +10,6 @@ paths:
      description: 'Show All Warehouses Inventory'
      examples:
       application/json:
-       username: 
         - id: 27
           goods: {goodsId: "roti"}
           warehouse: {
