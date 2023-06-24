@@ -1,6 +1,10 @@
 package id.co.indivara.jdt12.wharehouseApp;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
+import id.co.indivara.jdt12.wharehouseApp.entity.Goods;
+import id.co.indivara.jdt12.wharehouseApp.entity.Store;
 import id.co.indivara.jdt12.wharehouseApp.entity.Warehouse;
+import id.co.indivara.jdt12.wharehouseApp.entity.WarehouseToWarehouse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,13 +18,12 @@ import org.springframework.web.context.WebApplicationContext;
 
 import java.util.Base64;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class WarehouseInventoryControllerTest {
+public class WarehouseToStoreControllerTest {
     @Autowired
     private MockMvc mockMvc;
     ObjectMapper objectMapper = new ObjectMapper();
@@ -34,33 +37,27 @@ public class WarehouseInventoryControllerTest {
     }
 
     @Test
-    public void showInventory() throws Exception {
-        mockMvc.perform(
-                        get("/warehouse/find/all")
-                                .accept(MediaType.APPLICATION_JSON)
-                                .contentType(MediaType.APPLICATION_JSON)
-                                .header("Authorization", "Basic " + Base64.getEncoder().encodeToString("admin:admin".getBytes())))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.[0]id").exists())
-                .andExpect(jsonPath("$.[0]goods.goodsId").exists())
-                .andExpect(jsonPath("$.[0]warehouse.warehouseId").exists())
-                .andExpect(jsonPath("$.[0]stock").exists());
-    }
-
-    @Test
-    public void showInventoryByWarehouse() throws Exception {
-        Warehouse warehouse = new Warehouse();
-        warehouse.setWarehouseId("wh1");
+    public void WarehouseToWarehouse() throws Exception{
+        Warehouse warehouseSrc = new Warehouse();
+        warehouseSrc.setWarehouseId("wh1");
+        Store storeDest = new Store();
+        storeDest.setStoreId("str1");
+        Goods goods = new Goods();
+        goods.setGoodsId("roti");
+        WarehouseToWarehouse warehouseToWarehouse = new WarehouseToWarehouse();
+        warehouseToWarehouse.setTotal(400);
 
         mockMvc.perform(
-                        get("/warehouse/find/{warehouse}",warehouse.getWarehouseId())
+                        post("/warehouse/delivery/{goodsId}/{whouseSrc}/to/{storeDest}",goods.getGoodsId(),warehouseSrc.getWarehouseId(),storeDest.getStoreId())
                                 .accept(MediaType.APPLICATION_JSON)
                                 .contentType(MediaType.APPLICATION_JSON)
+                                .content(objectMapper.writeValueAsString(warehouseToWarehouse))
                                 .header("Authorization", "Basic " + Base64.getEncoder().encodeToString("whuser:warehouse".getBytes())))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.[0]id").exists())
-                .andExpect(jsonPath("$.[0]goods.goodsId").exists())
-                .andExpect(jsonPath("$.[0]warehouse.warehouseId").value(warehouse.getWarehouseId()))
-                .andExpect(jsonPath("$.[0]stock").exists());
+                .andExpect(jsonPath("$.transactionId").exists())
+                .andExpect(jsonPath("$.warehouseSrc.warehouseId").value("wh1"))
+                .andExpect(jsonPath("$.goods.goodsId").value("roti"))
+                .andExpect(jsonPath("$.storeDest.storeId").value("str1"))
+                .andExpect(jsonPath("$.total").value(400))
+                .andExpect(jsonPath("$.dateTime").exists());
     }
 }

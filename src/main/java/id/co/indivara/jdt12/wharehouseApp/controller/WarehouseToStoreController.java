@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Date;
 
 @CrossOrigin("http://localhost:8080")
-@RequestMapping("/store")
+@RequestMapping("/warehouse")
 @RestController
 public class WarehouseToStoreController {
     @Autowired
