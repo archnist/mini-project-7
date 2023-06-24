@@ -1,0 +1,149 @@
+swagger: '2.0'
+info:
+ title: 'Warehouse Application'
+ version: '1.0'
+paths:
+ /warehouse/find/all:
+  get:
+   responses:
+    200:
+     description: 'Show All Warehouses Inventory'
+     examples:
+      application/json:
+      Authorization:
+        - id: 27
+          goods: {goodsId: "roti"}
+          warehouse: {
+            warehouseId: "wh1",
+            warehouseName: "Wuhan Warehouse",
+            location: "Wuhan",
+            date: "2023-06-21T15:59:49.000+00:00"
+          }
+          stock: 1000 
+        - id: 28
+          goods: {goodsId: "roti"}
+          warehouse: {
+            warehouseId: "wh2",
+            warehouseName: "Jaya Warehouse",
+            location: "Jakarta Timur",
+            date: "2023-06-22T00:51:04.000+00:00"
+          }
+          stock: 100
+        - id: 30
+          goods: {goodsId: "kaos"}
+          warehouse: {
+            warehouseId: "wh1",
+            warehouseName: "Wuhan Warehouse",
+            location: "Wuhan",
+            date: "2023-06-21T15:59:49.000+00:00"
+          }
+          stock: 500
+
+ /supp/add/{whouseId}/{goodsId}:
+  post:
+   parameters:
+    - name: whouseId
+      in: path
+      description: 'Warehouse Id'
+      type: string
+      required: true
+    - name: goodsId
+      in: path
+      description: 'Goods Id'
+      type: string
+      required: true
+   responses:
+    200:
+     description: 'Supply Goods To Warehouse Successfully'
+     examples:
+      application/json:
+          transactionId: "T1"
+          warehouse: {
+            warehouseId: "wh1",
+            warehouseName: "Wuhan Warehouse",
+            location: "Wuhan",
+            date: "2023-06-21T15:59:49.000+00:00"
+          }
+          goods: {goodsId: "roti"}
+          total: 1000
+          dateTime: "2023-06-24T14:59:53.590+00:00"
+ 
+ /warehouse/transfer/{goodsId}/{source}/to/{destination}:
+  post:
+   parameters:
+    - name: goodsId
+      in: path
+      description: 'Goods Id'
+      type: string
+      required: true
+    - name: source
+      in: path
+      description: 'Warehouse Source Id'
+      type: string
+      required: true
+    - name: destination
+      in: path
+      description: 'Warehouse Destination Id'
+      type: string
+      required: true  
+   responses:
+    200:
+     description: 'Transfer Goods To Warehouse Successfully'
+     examples:
+      application/json:
+          transactionId: "T17"
+          warehouseSource: {
+            warehouseId: "wh1",
+            warehouseName: "Wuhan Warehouse",
+            location: "Wuhan",
+            date: "2023-06-21T15:59:49.000+00:00"
+          }
+          warehouseDestination: {
+            warehouseId: "wh2",
+            warehouseName: "Jaya Warehouse",
+            location: "Jakarta Timur",
+            date: "2023-06-22T00:51:04.000+00:00"
+          }
+          goods: {goodsId: "roti"}
+          total: 500
+          dateTime: "2023-06-24T15:24:34.030+00:00"
+          
+ /warehouse/delivery/{goodsId}/{whouseSrc}/to/{storeDest}:
+  post:
+   parameters:
+    - name: goodsId
+      in: path
+      description: 'Goods Id'
+      type: string
+      required: true
+    - name: whouseSrc
+      in: path
+      description: 'Warehouse Source Id'
+      type: string
+      required: true
+    - name: storeDest
+      in: path
+      description: 'Warehouse Destination Id'
+      type: string
+      required: true  
+   responses:
+    200:
+     description: 'Delivery Goods To Store Successfully'
+     examples:
+      application/json:
+          transactionId: "T17"
+          warehouseSrc: {
+            warehouseId: "wh1",
+            warehouseName: "Wuhan Warehouse",
+            location: "Wuhan",
+            date: "2023-06-21T15:59:49.000+00:00"
+          }
+          storeDest: {
+            storeId: "str1",
+            storeName: "Ilham Store",
+            location: "Jakarta Timur",
+            date: "2023-06-21T07:41:09.000+00:00"
+          }
+          goods: {goodsId: "roti"}
+          total: 500
+          dateTime: "2023-06-24T15:37:20.163+00:00"
