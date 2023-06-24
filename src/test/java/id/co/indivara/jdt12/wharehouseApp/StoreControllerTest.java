@@ -54,5 +54,32 @@ class StoreControllerTest{
                 .andExpect(jsonPath("$.location").value(store.getLocation()))
                 .andExpect(jsonPath("$.date").exists());
     }
-
+    @Test
+    public void showAllStores() throws Exception {
+        mockMvc.perform(
+                        get("/store/show/all")
+                                .accept(MediaType.APPLICATION_JSON)
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .header("Authorization", "Basic " + Base64.getEncoder().encodeToString("whuser:warehouse".getBytes())))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.[0]storeId").exists())
+                .andExpect(jsonPath("$.[0]storeName").exists())
+                .andExpect(jsonPath("$.[0]location").exists())
+                .andExpect(jsonPath("$.[0]date").exists());
+    }
+    @Test
+    public void showStoreByName() throws Exception {
+        Store store = new Store();
+        store.setStoreName("Ilham Store");
+        mockMvc.perform(
+                        get("/store/show/{storeName}",store.getStoreName())
+                                .accept(MediaType.APPLICATION_JSON)
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .header("Authorization", "Basic " + Base64.getEncoder().encodeToString("whuser:warehouse".getBytes())))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.[0]storeId").exists())
+                .andExpect(jsonPath("$.[0]storeName").value("Ilham Store"))
+                .andExpect(jsonPath("$.[0]location").exists())
+                .andExpect(jsonPath("$.[0]date").exists());
+    }
 }

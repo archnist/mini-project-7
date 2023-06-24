@@ -44,7 +44,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.GET, "/warehouse/transaction/{warehouse}").hasRole("WHUSER")
                 .antMatchers(HttpMethod.POST, "/supp/add/{whouseId}/{goodsId}").hasRole("SUPPLIER")
                 .antMatchers(HttpMethod.POST, "/warehouse/transfer/{goodsId}/{source}/to/{destination}").hasRole("WHUSER")
-                .antMatchers(HttpMethod.POST, "/store/delivery/{goodsId}/{whouseSrc}/to/{storeDest}").hasRole("WHUSER")
+                .antMatchers(HttpMethod.POST, "/warehouse/delivery/{goodsId}/{whouseSrc}/to/{storeDest}").hasRole("WHUSER")
                 .and()
                 .csrf().disable()
                 .formLogin().disable();
