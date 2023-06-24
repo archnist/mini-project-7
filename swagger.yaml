@@ -146,3 +146,107 @@ paths:
           goods: {goodsId: "roti"}
           total: 500
           dateTime: "2023-06-24T15:37:20.163+00:00"
+          
+ /warehouse/register:
+  post:
+   responses:
+    200:
+     description: 'Register Warehouse'
+     examples:
+      application/json:
+          warehouseId: "wh1"
+          warehouseName: "Test Warehouse"
+          location: "test"
+          date: "2023-06-24T19:02:26.951+00:00"
+          
+ /warehouse/show/all:
+  get:
+   responses:
+    200:
+     description: 'Show All Warehouses'
+     examples:
+      application/json:
+        - warehouseId: "wh1"
+          warehouseName: "Wuhan Warehouse"
+          location: "Wuhan"
+          date: "2023-06-21T15:59:49.000+00:00"
+        - warehouseId: "wh2"
+          warehouseName: "Jaya Warehouse"
+          location: "Jakarta Timur"
+          date: "2023-06-22T00:51:04.000+00:00"  
+        - warehouseId: "wh3"
+          warehouseName: "Security Warehouse"
+          location: "Jakarta Timur"
+          date: "2023-06-24T01:28:15.000+00:00"  
+          
+ /warehouse/transaction/{warehouse}:
+  get:
+   parameters:
+    - name: warehouse
+      in: path
+      description: 'Warehouse Id'
+      type: string
+      required: true
+   responses:
+    200:
+     description: 'Show Warehouse Transactions History'
+     examples:
+      application/json:
+       "Supplier To Warehouse": [
+          {
+            "transactionId": "T1",
+            "warehouse": {
+              "warehouseId": "wh1",
+              "warehouseName": "Wuhan Warehouse",
+              "location": "Wuhan",
+              "date": "2023-06-21T15:59:49.000+00:00"
+            },
+            "goods": {"goodsId": "beras"},
+            "total": 10000,
+            "dateTime": "2023-06-24T18:33:39.000+00:00"
+          }
+        ] 
+       "Warehouse To Warehouse": [
+          {
+            "transactionId": "T2",
+            "warehouseSource": {
+                "warehouseId": "wh1",
+                "warehouseName": "Wuhan Warehouse",
+                "location": "Wuhan",
+                "date": "2023-06-21T15:59:49.000+00:00"
+            },
+            "warehouseDestination": {
+                "warehouseId": "wh2",
+                "warehouseName": "Jaya Warehouse",
+                "location": "Jakarta Timur",
+                "date": "2023-06-22T00:51:04.000+00:00"
+            },
+            "goods": {
+                "goodsId": "beras"
+            },
+            "total": 5000,
+            "dateTime": "2023-06-24T19:22:20.000+00:00"
+          }
+         ]
+       "Warehouse To Store": [
+          {
+            "transactionId": "T3",
+            "warehouseSrc": {
+                "warehouseId": "wh1",
+                "warehouseName": "Wuhan Warehouse",
+                "location": "Wuhan",
+                "date": "2023-06-21T15:59:49.000+00:00"
+            },
+            "storeDest": {
+                "storeId": "str1",
+                "storeName": "Ilham Store",
+                "location": "Jakarta Timur",
+                "date": "2023-06-21T07:41:09.000+00:00"
+            },
+            "goods": {
+                "goodsId": "beras"
+            },
+            "total": 5000,
+            "dateTime": "2023-06-24T19:22:53.000+00:00"
+          }
+         ]
