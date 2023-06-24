@@ -10,7 +10,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Date;
 
-@CrossOrigin("http://localhost:8080")
+@CrossOrigin("http://localhost:8081")
 @RequestMapping("/supp")
 @RestController
 public class SuppToWarehouseController {
@@ -25,7 +25,6 @@ public class SuppToWarehouseController {
     @Autowired
     TransactionRepository transactionRepository;
 
-    @ExceptionHandler(ResponseStatusException.class)
     @PostMapping("/add/{whouseid}/{goodsid}")
     public ResponseEntity<SuppToWarehouse> addGoods(@PathVariable("whouseid") Warehouse whouseid, @PathVariable("goodsid") Goods goodsid, @RequestBody SuppToWarehouse suppToWarehouse){
         SuppToWarehouse supp = warehouseRepository.findById(whouseid.getWarehouseId()).map(warehouse -> {
@@ -53,6 +52,6 @@ public class SuppToWarehouseController {
             }
             return suppToWarehouseRepository.save(suppToWarehouse);
         }).orElseThrow(()->new NotFoundException("data tidak ada"));
-        return new ResponseEntity<>(supp, HttpStatus.CREATED);
+        return new ResponseEntity<>(supp,HttpStatus.CREATED);
     }
 }

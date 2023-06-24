@@ -2,6 +2,7 @@ package id.co.indivara.jdt12.wharehouseApp.controller;
 import id.co.indivara.jdt12.wharehouseApp.entity.*;
 import id.co.indivara.jdt12.wharehouseApp.repo.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.Date;
 import java.util.HashMap;
@@ -30,13 +31,25 @@ public class WarehouseController {
         return warehouseRepository.save(warehouse);
     }
 
+    @GetMapping("/show/all")
+    public List<Warehouse> showAll(){
+        return (List<Warehouse>) warehouseRepository.findAll();
+    }
+
+    @GetMapping("/show/{warehouseName}")
+    public List<Warehouse> findByWarehouseName(@PathVariable("warehouseName") String warehouseName){
+        return (List<Warehouse>) warehouseRepository.findByWarehouseName(warehouseName);
+    }
+
     @GetMapping("/transaction/suppToWarehouse/{warehouse}")
     public List<SuppToWarehouse> findSupplierToWarehouseTransaction(@PathVariable("warehouse") Warehouse warehouse){
         return (List<SuppToWarehouse>) suppToWarehouseRepository.findByWarehouse(warehouse);
     }
+    @GetMapping("/transaction/warehouseToWarehouse/{warehouse}")
     public List<WarehouseToWarehouse> findWarehouseToWarehouseTransaction(Warehouse warehouse){
         return (List<WarehouseToWarehouse>) warehouseToWarehouseRepository.findByWarehouseSource(warehouse);
     }
+    @GetMapping("/transaction/warehouseToStore/{warehouse}")
     public List<WarehouseToStore> findWarehouseToStoreTransaction(Warehouse warehouse){
         return (List<WarehouseToStore>) warehouseToStoreRepository.findByWarehouseSrc(warehouse);
     }

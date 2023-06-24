@@ -1,4 +1,5 @@
 package id.co.indivara.jdt12.wharehouseApp.entity;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.JsonSerializable;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
