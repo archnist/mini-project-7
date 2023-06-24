@@ -249,4 +249,62 @@ paths:
             "total": 5000,
             "dateTime": "2023-06-24T19:22:53.000+00:00"
           }
-         ]
+         ] 
+                    
+ /store/register:
+  post:
+   responses:
+    200:
+     description: 'Register Store'
+     examples:
+      application/json:
+          storeId: "str1"
+          storeName: "Brando Store"
+          location: "Bekasi"
+          date: "2023-06-24T20:19:36.950+00:00"
+          
+ /store/show/all:
+  get:
+   responses:
+    200:
+     description: 'Show All Stores'
+     examples:
+      application/json:
+        - storeId: "str1"
+          storeName: "Ilham Store"
+          location: "Jakarta Timur"
+          date: "2023-06-21T07:41:09.000+00:00"
+        - storeId: "str2"
+          storeName: "Brando Store"
+          location: "Bekasi"
+          date: "2023-06-24T20:19:36.000+00:00"
+        - storeId: "str3"
+          storeName: "Cendy Store"
+          location: "Bekasi"
+          date: "2023-06-24T20:29:43.000+00:00"
+
+ /transaction/all:
+  get:
+   responses:
+    200:
+     description: 'Show All Transactions'
+     examples:
+      application/json:
+        - transactionId: "T1"
+          type: "Supplier To Warehouse"
+          goods: {
+            "goodsId": "beras"
+        }
+          dateTime: "2023-06-24T18:33:39.000+00:00"
+        - transactionId: "T2"
+          type: "Warehouse To Warehouse"
+          goods: {
+            "goodsId": "beras"
+        }
+          dateTime: "2023-06-24T19:22:20.000+00:00"  
+        - transactionId: "T3"
+          type: "Warehouse To Store"
+          goods: {
+            "goodsId": "beras"
+        }
+          dateTime: "2023-06-24T19:22:53.000+00:00"
