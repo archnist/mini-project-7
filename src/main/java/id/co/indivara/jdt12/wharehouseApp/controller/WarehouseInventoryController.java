@@ -1,4 +1,5 @@
 package id.co.indivara.jdt12.wharehouseApp.controller;
+import id.co.indivara.jdt12.wharehouseApp.entity.Goods;
 import id.co.indivara.jdt12.wharehouseApp.entity.Warehouse;
 import id.co.indivara.jdt12.wharehouseApp.entity.WarehouseInventory;
 import id.co.indivara.jdt12.wharehouseApp.repo.WarehouseInventoryRepository;
@@ -19,6 +20,11 @@ public class WarehouseInventoryController {
     @GetMapping("/find/{warehouse}")
     public List<WarehouseInventory> find(@PathVariable("warehouse") Warehouse warehouse) {
        return (List<WarehouseInventory>) warehouseInventoryRepository.findByWarehouse(warehouse);
+    }
+
+    @GetMapping("/find/{warehouseId}/{goodsId}")
+    public WarehouseInventory findByGoodsAndWarehouse(@PathVariable("warehouseId")Warehouse warehouse, @PathVariable("goodsId")Goods goods){
+        return warehouseInventoryRepository.findByGoodsAndWarehouse(goods,warehouse);
     }
 
     @GetMapping("/find/all")

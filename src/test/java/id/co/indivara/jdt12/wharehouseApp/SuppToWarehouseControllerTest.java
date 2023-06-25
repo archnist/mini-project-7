@@ -1,6 +1,7 @@
 package id.co.indivara.jdt12.wharehouseApp;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import id.co.indivara.jdt12.wharehouseApp.entity.*;
+import id.co.indivara.jdt12.wharehouseApp.repo.WarehouseInventoryRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -24,6 +25,9 @@ public class SuppToWarehouseControllerTest {
     ObjectMapper objectMapper = new ObjectMapper();
     @Autowired
     private WebApplicationContext webApplicationContext;
+    @Autowired
+    WarehouseInventoryRepository warehouseInventoryRepository;
+
     @BeforeEach
     public void setup() {
         mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext)
@@ -32,24 +36,43 @@ public class SuppToWarehouseControllerTest {
     }
 
     @Test
-    public void SupplaiToWarehouse() throws Exception{
+    public void supplaiToWarehouse() throws Exception {
         Warehouse warehouse = new Warehouse();
         warehouse.setWarehouseId("wh1");
         Goods goods = new Goods();
-        goods.setGoodsId("kaos");
+        goods.setGoodsId("roti");
         SuppToWarehouse suppToWarehouse = new SuppToWarehouse();
         suppToWarehouse.setTotal(1000);
 
         mockMvc.perform(
-                        post("/supp/add/{whouseid}/{goodsid}",warehouse.getWarehouseId(),goods.getGoodsId())
+                        post("/supp/add/{whouseid}/{goodsid}", warehouse.getWarehouseId(), goods.getGoodsId())
                                 .accept(MediaType.APPLICATION_JSON)
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(objectMapper.writeValueAsString(suppToWarehouse))
                                 .header("Authorization", "Basic " + Base64.getEncoder().encodeToString("supplier:supp".getBytes())))
                 .andExpect(jsonPath("$.transactionId").exists())
-                .andExpect(jsonPath("$.goods.goodsId").value("kaos"))
+                .andExpect(jsonPath("$.goods.goodsId").value("roti"))
                 .andExpect(jsonPath("$.warehouse.warehouseId").value("wh1"))
                 .andExpect(jsonPath("$.total").value(1000))
                 .andExpect(jsonPath("$.dateTime").exists());
+    }
+
+    @Test
+    public void inventoryCheck() throws Exception {
+        Warehouse warehouse = new Warehouse();
+        warehouse.setWarehouseId("wh1");
+        Goods goods = new Goods();
+        goods.setGoodsId("roti");
+        WarehouseInventory warehouseInventory = warehouseInventoryRepository.findByGoodsAndWarehouse(goods,warehouse);
+        mockMvc.perform(
+                        get("/warehouse/find/{warehouseId}/{goodsId}", warehouse.getWarehouseId(),goods.getGoodsId())
+                                .accept(MediaType.APPLICATION_JSON)
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .header("Authorization", "Basic " + Base64.getEncoder().encodeToString("whuser:warehouse".getBytes())))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.warehouse.warehouseId").value("wh1"))
+                .andExpect(jsonPath("$.goods.goodsId").value("roti"))
+                .andExpect(jsonPath("$.stock").value(warehouseInventory.getStock()));
+
     }
 }
